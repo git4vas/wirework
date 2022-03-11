@@ -42,7 +42,7 @@ TODO
 
 #### docker Installation
 
-nstall packages to allow apt to use a repository over HTTPS:
+install packages to allow apt to use a repository over HTTPS:
 
     #apt-get install \
     >     ca-certificates \
@@ -79,7 +79,7 @@ Added .env to store the password hash
 
 ### ssh access with certificate
 
-1. local machine
+logman machine (.158)
 
 keygen
 
@@ -96,7 +96,45 @@ config:
     Port 22                         <- (optional if 22)
     IdentityFile ~/.ssh/mykeyfile   <- path to private key
 
-copy public key
+copy public key to logbox server (.150)
 
     $ ssh-copy-id -i ~/.ssh/mykeyfile.pub logger@152.65.77.150
 
+test on .158
+
+    $ ssh -Tvvv logbox
+
+
+### configuring inputs
+
+    allow_override_date:       true
+    bind_address:              0.0.0.0
+    expand_structured_data:    false
+    force_rdns:                true
+    number_worker_threads:     1
+    override_source:           <empty>
+    port:                      5140
+    recv_buffer_size:          262144
+    store_full_message:        false
+
+#### cisco switch
+
+    Switch>enable
+    Switch#configure terminal
+    Switch(config)# logging host     [logging 172.16.10.51] or [logging 172.16.10.51 transport udp port 5140]
+    Switch(config)# logging trap level [default level is informational]
+    Switch(config)# end
+
+#### pfsense router
+
+![webGUI](pfsense.png)
+
+#### linux host
+
+    # nano /etc/rsyslog.d/80-graylog.conf
+
+config rsyslog daemon to send UDP messages in syslog format to the logbox server (.150)
+
+    *.* @152.77.65.150:5140;RSYSLOG_SyslogProtocol23Format
+
+###
