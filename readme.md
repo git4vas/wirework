@@ -76,3 +76,27 @@ Update the `apt` package index, and install the latest version of Docker Engine 
     git clone https://github.com/git4vas/wirework.git
 
 Added .env to store the password hash
+
+### ssh access with certificate
+
+1. local machine
+
+keygen
+
+
+    $ ssh-keygen -q -N '' -b 4096 -f ~/.ssh/mykeyfile
+    $ cat mykeyfile.pub
+    $ nano ~/.ssh/config
+    
+config:
+    
+    Host logbox                     <- alias
+    HostName 152.77.65.150          <- hostname or ip
+    User logger                     <- user-name on remote machine
+    Port 22                         <- (optional if 22)
+    IdentityFile ~/.ssh/mykeyfile   <- path to private key
+
+copy public key
+
+    $ ssh-copy-id -i ~/.ssh/mykeyfile.pub logger@152.65.77.150
+
