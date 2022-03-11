@@ -36,7 +36,8 @@ Containers:
   * MongoDB
   * ElasticSearch
 
-TODO
+[//]: # (TODO)
+[comment]: <> (This is a comment, it will not be included) 
 
 * ntp
 
@@ -165,3 +166,11 @@ config rsyslog daemon to send UDP messages in syslog format to the logbox server
 Max size per index      1 GiB
 Retention strategy      Close index
 Max number of indices   20
+
+
+### timezone
+
+added timezone to environment inside .yml
+
+    environment:
+      GRAYLOG_ROOT_TIMEZONE: "Europe/Paris"
