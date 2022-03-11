@@ -81,29 +81,22 @@ Added .env to store the password hash
 
 logman machine (.158)
 
-keygen
+keygen & copy public key to logbox server (.150)
 
+    ssh-keygen -q -N '' -b 4096 -f ~/.ssh/mykeyfile
+    ssh-copy-id -i ~/.ssh/mykeyfile.pub logger@152.65.77.150
 
-    $ ssh-keygen -q -N '' -b 4096 -f ~/.ssh/mykeyfile
-    $ cat mykeyfile.pub
-    $ nano ~/.ssh/config
-    
-config:
-    
+config (`nano ~/.ssh/config`):
+
     Host logbox                     <- alias
     HostName 152.77.65.150          <- hostname or ip
     User logger                     <- user-name on remote machine
     Port 22                         <- (optional if 22)
     IdentityFile ~/.ssh/mykeyfile   <- path to private key
 
-copy public key to logbox server (.150)
+test on .158:
 
-    $ ssh-copy-id -i ~/.ssh/mykeyfile.pub logger@152.65.77.150
-
-test on .158
-
-    $ ssh -Tvvv logbox
-
+    ssh -Tvvv logbox
 
 ### configuring inputs
 
@@ -137,4 +130,38 @@ config rsyslog daemon to send UDP messages in syslog format to the logbox server
 
     *.* @152.77.65.150:5140;RSYSLOG_SyslogProtocol23Format
 
-###
+#### windows host
+
+![nxlog config](nxlog.png)
+
+    <Extension _syslog>
+        Module      xm_syslog
+    </Extension>
+
+    <Input in>
+        Module      im_msvistalog
+    </Input>
+
+    <Output out>
+        Module      om_udp
+        Host        152.77.65.150
+        Port        5140
+        Exec        to_syslog_ietf();
+    </Output>
+
+    <Route 1>
+    Path  in => out
+    </Route>
+
+[//]: # (http://thehackertips.com/sending-syslog-from-windows-hosts-to-graylog-server/)
+
+### Dashboard
+
+...is added from search. Example: dashboard for the management machine with UDP filter
+![dashboard of .157 showing udp](dashboard-filter.png)
+
+### Rotation
+
+Max size per index      1 GiB
+Retention strategy      Close index
+Max number of indices   20
