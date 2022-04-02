@@ -57,6 +57,8 @@ services:
       - "graylog_data:/usr/share/graylog/data/data"
       - "graylog_journal:/usr/share/graylog/data/journal"
     restart: "always"
+
+
 volumes:
   mongodb_data:
   es_data:

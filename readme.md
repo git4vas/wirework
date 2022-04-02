@@ -37,7 +37,7 @@ Containers:
   * ElasticSearch
 
 [//]: # (TODO)
-[comment]: <> (This is a comment, it will not be included) 
+[comment]: <> (This is a comment, it will not be included)
 
 * ntp
 
@@ -76,13 +76,24 @@ Update the `apt` package index, and install the latest version of Docker Engine 
 
     git clone https://github.com/git4vas/wirework.git
 
-Added .env to store the password hash
+Added .env to store the password hash (included in .gitignore!)
+
+generated secret: `pwgen -N 1 -s 96`
+
+SHA2 hash generated with `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
+to be able to log in to the web interface with entered password
+
+`.env` contents:
+
+    GRAYLOG_PASSWORD_SECRET = <secret>
+    GRAYLOG_ROOT_USERNAME = <username>
+    GRAYLOG_ROOT_PASSWORD_SHA2 = <SHA2>
 
 ### ssh access with certificate
 
-logman machine (.158)
+logman machine (`.158`)
 
-keygen & copy public key to logbox server (.150)
+keygen & copy public key to logbox server (`.150`)
 
     ssh-keygen -q -N '' -b 4096 -f ~/.ssh/mykeyfile
     ssh-copy-id -i ~/.ssh/mykeyfile.pub logger@152.65.77.150
@@ -95,7 +106,7 @@ config (`nano ~/.ssh/config`):
     Port 22                         <- (optional if 22)
     IdentityFile ~/.ssh/mykeyfile   <- path to private key
 
-test on .158:
+test on `.158`:
 
     ssh -Tvvv logbox
 
@@ -133,6 +144,12 @@ config rsyslog daemon to send UDP messages in syslog format to the logbox server
 
 #### windows host
 
+[set up nxlog as a syslog agent](https://thehackertips.com/sending-syslog-from-windows-hosts-to-graylog-server/)
+
+Downloaded and installed nxlog program (`choco Install nxlog`)
+
+    C:\Program Files (x86)\nxlog\conf\nxlog.conf
+
 ![nxlog config](nxlog.png)
 
     <Extension _syslog>
@@ -151,8 +168,10 @@ config rsyslog daemon to send UDP messages in syslog format to the logbox server
     </Output>
 
     <Route 1>
-    Path  in => out
+        Path  in => out
     </Route>
+
+Win + R > `services.msc` > Rclick `nxlog` > Start
 
 [//]: # (http://thehackertips.com/sending-syslog-from-windows-hosts-to-graylog-server/)
 
@@ -166,7 +185,6 @@ config rsyslog daemon to send UDP messages in syslog format to the logbox server
 Max size per index      1 GiB
 Retention strategy      Close index
 Max number of indices   20
-
 
 ### timezone
 
