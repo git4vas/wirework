@@ -76,14 +76,14 @@ Update the `apt` package index, and install the latest version of Docker Engine 
 
     git clone https://github.com/git4vas/wirework.git
 
-Added .env to store the password hash (included in .gitignore!)
+Added .env to store the password hash (included in .gitignore to avoid publishing)
 
-generated secret: `pwgen -N 1 -s 96`
+[generated secret](https://linux.die.net/man/1/pwgen): `pwgen -N 1 -s 96`
 
 SHA2 hash generated with `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
 to be able to log in to the web interface with entered password
 
-`.env` contents:
+`.env` contents (cf. [server.conf Graylog manual](https://docs.graylog.org/v1/docs/server-conf) for more detail):
 
     GRAYLOG_PASSWORD_SECRET = <secret>
     GRAYLOG_ROOT_USERNAME = <username>
@@ -172,6 +172,18 @@ Downloaded and installed nxlog program (`choco Install nxlog`)
     </Route>
 
 Win + R > `services.msc` > Rclick `nxlog` > Start
+
+To have logs in *`English`* go to
+
+    [settings > region > Additional date, time & regional settings]
+
+Then select `Region` in the new window, then choose `Administrative tab` in the new dialogue, then push the button `[Change system locale...]` and make your choice for non-Unicode characters.
+In my case the use of Unicode (beta) is checked.  
+Hope that works after reboot...
+
+Sometimes it does not and invokes glitches due to the registry inconsistence, presumably. The advise would be not to install locales based on the same language, to remove and reinstall language packs in case of glitches. Nothing more specific, unfortunately.
+
+Still don't know how to enable English for system messages on startup screen and system events during reboot etc., though.
 
 [//]: # (http://thehackertips.com/sending-syslog-from-windows-hosts-to-graylog-server/)
 
