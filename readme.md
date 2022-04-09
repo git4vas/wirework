@@ -1,12 +1,6 @@
 # Academic project history
 
-## Failed Steps
-
-Installing Graylog in container over VirtualBox VM on a physical machine with HDD.
-
-reason: HW failure
-
-## Consequent workflow
+## Workflow
 
 ### Management VM setup
 
