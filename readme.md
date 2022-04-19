@@ -33,7 +33,10 @@ Containers:
 [//]: # (TODO)
 [comment]: <> (This is a comment, it will not be included)
 
-* ntp
+UDP syslog message agents:
+
+* rsyslog.service (Linux)
+* nxlog (Windows)
 
 #### docker Installation
 
